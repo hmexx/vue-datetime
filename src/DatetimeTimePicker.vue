@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { hours, minutes, pad, timeComponentIsDisabled } from "./util";
+import { hours, minutes, pad, timeComponentIsDisabled } from './util'
 
 export default {
   props: {
@@ -55,16 +55,16 @@ export default {
   },
 
   computed: {
-    hours() {
+    hours () {
       return hours(this.hourStep)
         .filter(hour => {
           if (!this.use12Hour) {
-            return true;
+            return true
           } else {
             if (this.hour < 12) {
-              return hour < 12;
+              return hour < 12
             } else {
-              return hour >= 12;
+              return hour >= 12
             }
           }
         })
@@ -72,9 +72,9 @@ export default {
           number: pad(hour),
           selected: hour === this.hour,
           disabled: timeComponentIsDisabled(this.minHour, this.maxHour, hour)
-        }));
+        }))
     },
-    minutes() {
+    minutes () {
       return minutes(this.minuteStep).map(minute => ({
         number: pad(minute),
         selected: minute === this.minute,
@@ -83,89 +83,89 @@ export default {
           this.maxMinute,
           minute
         )
-      }));
+      }))
     },
-    minHour() {
-      return this.minTime ? parseInt(this.minTime.split(":")[0]) : null;
+    minHour () {
+      return this.minTime ? parseInt(this.minTime.split(':')[0]) : null
     },
-    minMinute() {
+    minMinute () {
       return this.minTime && this.minHour === this.hour
-        ? parseInt(this.minTime.split(":")[1])
-        : null;
+        ? parseInt(this.minTime.split(':')[1])
+        : null
     },
-    maxHour() {
-      return this.maxTime ? parseInt(this.maxTime.split(":")[0]) : null;
+    maxHour () {
+      return this.maxTime ? parseInt(this.maxTime.split(':')[0]) : null
     },
-    maxMinute() {
+    maxMinute () {
       return this.maxTime && this.maxHour === this.hour
-        ? parseInt(this.maxTime.split(":")[1])
-        : null;
+        ? parseInt(this.maxTime.split(':')[1])
+        : null
     }
   },
 
   methods: {
-    selectHour(hour) {
+    selectHour (hour) {
       if (hour.disabled) {
-        return;
+        return
       }
 
-      this.$emit("change", { hour: parseInt(hour.number) });
+      this.$emit('change', { hour: parseInt(hour.number) })
     },
-    selectMinute(minute) {
+    selectMinute (minute) {
       if (minute.disabled) {
-        return;
+        return
       }
 
-      this.$emit("change", { minute: parseInt(minute.number) });
+      this.$emit('change', { minute: parseInt(minute.number) })
     },
-    selectSuffix(suffix) {
-      if (suffix === "am") {
+    selectSuffix (suffix) {
+      if (suffix === 'am') {
         if (this.hour >= 12) {
-          this.$emit("change", {
+          this.$emit('change', {
             hour: parseInt(this.hour - 12),
             suffixTouched: true
-          });
+          })
         }
       }
-      if (suffix === "pm") {
+      if (suffix === 'pm') {
         if (this.hour < 12) {
-          this.$emit("change", {
+          this.$emit('change', {
             hour: parseInt(this.hour + 12),
             suffixTouched: true
-          });
+          })
         }
       }
     },
-    formatHour(hour) {
-      const numHour = Number(hour);
+    formatHour (hour) {
+      const numHour = Number(hour)
       if (this.use12Hour) {
         if (numHour === 0) {
-          return 12;
+          return 12
         }
         if (numHour > 12) {
-          return numHour - 12;
+          return numHour - 12
         }
-        return numHour;
+        return numHour
       }
-      return hour;
+      return hour
     }
   },
 
-  mounted() {
+  mounted () {
     const selectedHour = this.$refs.hourList.querySelector(
-      ".vdatetime-time-picker__item--selected"
-    );
+      '.vdatetime-time-picker__item--selected'
+    )
     const selectedMinute = this.$refs.minuteList.querySelector(
-      ".vdatetime-time-picker__item--selected"
-    );
+      '.vdatetime-time-picker__item--selected'
+    )
     this.$refs.hourList.scrollTop = selectedHour
       ? selectedHour.offsetTop - 250
-      : 0;
+      : 0
     this.$refs.minuteList.scrollTop = selectedMinute
       ? selectedMinute.offsetTop - 250
-      : 0;
+      : 0
   }
-};
+}
 </script>
 
 <style>

@@ -149,13 +149,12 @@ export default {
       })
     },
     timeFormatted () {
-      if (this.step === 'time') 
-      return this.newDatetime.toLocaleString({
-        hour: 'numeric',
-        minute: 'numeric'
-      })
-      else 
-      return "";
+      if (this.step === 'time') {
+        return this.newDatetime.toLocaleString({
+          hour: 'numeric',
+          minute: 'numeric'
+        })
+      } else { return '' }
     },
     minTime () {
       return (
