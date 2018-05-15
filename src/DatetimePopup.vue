@@ -2,7 +2,11 @@
   <div class="vdatetime-popup">
     <div class="vdatetime-popup__header">
       <div class="vdatetime-popup__year" @click="showYear">{{ year }}</div>
-      <div class="vdatetime-popup__date">{{ dateFormatted }}</div>
+      <div
+      style="    display: flex;
+    justify-content: space-between;"> <div class="vdatetime-popup__date">{{ dateFormatted }} </div>
+       <div class="vdatetime-popup__date">{{ timeFormatted }} </div></div>
+     
     </div>
     <div class="vdatetime-popup__body">
       <datetime-year-picker
@@ -143,6 +147,15 @@ export default {
         month: 'long',
         day: 'numeric'
       })
+    },
+    timeFormatted () {
+      if (this.step === 'time') 
+      return this.newDatetime.toLocaleString({
+        hour: 'numeric',
+        minute: 'numeric'
+      })
+      else 
+      return "";
     },
     minTime () {
       return (

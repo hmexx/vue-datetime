@@ -223,7 +223,7 @@ var DatetimeCalendar = {render: function(){var _vm=this;var _h=_vm.$createElemen
   }
 };
 
-var DatetimeTimePicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'vdatetime-time-picker': true, 'vdatetime-time-picker__with-suffix': _vm.use12Hour}},[_c('div',{ref:"hourList",staticClass:"vdatetime-time-picker__list vdatetime-time-picker__list--hours"},_vm._l((_vm.hours),function(hour){return _c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': hour.selected, 'vdatetime-time-picker__item--disabled': hour.disabled},on:{"click":function($event){_vm.selectHour(hour);}}},[_vm._v(_vm._s(_vm.formatHour(hour.number)))])})),_vm._v(" "),_c('div',{ref:"minuteList",staticClass:"vdatetime-time-picker__list vdatetime-time-picker__list--minutes"},_vm._l((_vm.minutes),function(minute){return _c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': minute.selected, 'vdatetime-time-picker__item--disabled': minute.disabled},on:{"click":function($event){_vm.selectMinute(minute);}}},[_vm._v(_vm._s(minute.number))])})),_vm._v(" "),(_vm.use12Hour)?_c('div',{ref:"suffixList",staticClass:"vdatetime-time-picker__list vdatetime-time-picker__list--suffix"},[_c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': _vm.hour < 12},on:{"click":function($event){_vm.selectSuffix('am');}}},[_vm._v("am")]),_vm._v(" "),_c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': _vm.hour >= 12},on:{"click":function($event){_vm.selectSuffix('pm');}}},[_vm._v("pm")])]):_vm._e()])},staticRenderFns: [],
+var DatetimeTimePicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'vdatetime-time-picker': true, 'vdatetime-time-picker__with-suffix': _vm.use12Hour}},[_vm._m(0),_vm._v(" "),_c('div',{ref:"hourList",staticClass:"vdatetime-time-picker__list vdatetime-time-picker__list--hours"},_vm._l((_vm.hours),function(hour){return _c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': hour.selected, 'vdatetime-time-picker__item--disabled': hour.disabled},on:{"click":function($event){_vm.selectHour(hour);}}},[_vm._v(_vm._s(_vm.formatHour(hour.number))),_c('span',{staticStyle:{"opacity":"0.3"}})])})),_vm._v(" "),_c('div',{ref:"minuteList",staticClass:"vdatetime-time-picker__list vdatetime-time-picker__list--minutes"},_vm._l((_vm.minutes),function(minute){return _c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': minute.selected, 'vdatetime-time-picker__item--disabled': minute.disabled},on:{"click":function($event){_vm.selectMinute(minute);}}},[_c('span',{staticStyle:{"opacity":"0.3"}}),_vm._v(_vm._s(minute.number))])})),_vm._v(" "),(_vm.use12Hour)?_c('div',{ref:"suffixList",staticClass:"vdatetime-time-picker__list vdatetime-time-picker__list--suffix"},[_c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': _vm.hour < 12},on:{"click":function($event){_vm.selectSuffix('am');}}},[_vm._v("am")]),_vm._v(" "),_c('div',{staticClass:"vdatetime-time-picker__item",class:{'vdatetime-time-picker__item--selected': _vm.hour >= 12},on:{"click":function($event){_vm.selectSuffix('pm');}}},[_vm._v("pm")])]):_vm._e()])},staticRenderFns: [function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"display":"flex","font-weight":"bold","justify-content":"space-around"}},[_c('div',[_vm._v("Hour")]),_c('div',[_vm._v("Minute")])])}],
   props: {
     hour: {
       type: Number,
@@ -256,95 +256,119 @@ var DatetimeTimePicker = {render: function(){var _vm=this;var _h=_vm.$createElem
   },
 
   computed: {
-    hours: function hours$1 () {
+    hours: function hours$1() {
       var this$1 = this;
 
-      return hours(this.hourStep).filter(function (hour) {
-        if (!this$1.use12Hour) {
-          return true
-        } else {
-          if (this$1.hour < 12) {
-            return hour < 12
+      return hours(this.hourStep)
+        .filter(function (hour) {
+          if (!this$1.use12Hour) {
+            return true;
           } else {
-            return hour >= 12
+            if (this$1.hour < 12) {
+              return hour < 12;
+            } else {
+              return hour >= 12;
+            }
           }
-        }
-      }).map(function (hour) { return ({
-        number: pad(hour),
-        selected: hour === this$1.hour,
-        disabled: timeComponentIsDisabled(this$1.minHour, this$1.maxHour, hour)
-      }); })
+        })
+        .map(function (hour) { return ({
+          number: pad(hour),
+          selected: hour === this$1.hour,
+          disabled: timeComponentIsDisabled(this$1.minHour, this$1.maxHour, hour)
+        }); });
     },
-    minutes: function minutes$1 () {
+    minutes: function minutes$1() {
       var this$1 = this;
 
       return minutes(this.minuteStep).map(function (minute) { return ({
         number: pad(minute),
         selected: minute === this$1.minute,
-        disabled: timeComponentIsDisabled(this$1.minMinute, this$1.maxMinute, minute)
-      }); })
+        disabled: timeComponentIsDisabled(
+          this$1.minMinute,
+          this$1.maxMinute,
+          minute
+        )
+      }); });
     },
-    minHour: function minHour () {
-      return this.minTime ? parseInt(this.minTime.split(':')[0]) : null
+    minHour: function minHour() {
+      return this.minTime ? parseInt(this.minTime.split(":")[0]) : null;
     },
-    minMinute: function minMinute () {
-      return this.minTime && this.minHour === this.hour ? parseInt(this.minTime.split(':')[1]) : null
+    minMinute: function minMinute() {
+      return this.minTime && this.minHour === this.hour
+        ? parseInt(this.minTime.split(":")[1])
+        : null;
     },
-    maxHour: function maxHour () {
-      return this.maxTime ? parseInt(this.maxTime.split(':')[0]) : null
+    maxHour: function maxHour() {
+      return this.maxTime ? parseInt(this.maxTime.split(":")[0]) : null;
     },
-    maxMinute: function maxMinute () {
-      return this.maxTime && this.maxHour === this.hour ? parseInt(this.maxTime.split(':')[1]) : null
+    maxMinute: function maxMinute() {
+      return this.maxTime && this.maxHour === this.hour
+        ? parseInt(this.maxTime.split(":")[1])
+        : null;
     }
   },
 
   methods: {
-    selectHour: function selectHour (hour) {
+    selectHour: function selectHour(hour) {
       if (hour.disabled) {
-        return
+        return;
       }
 
-      this.$emit('change', { hour: parseInt(hour.number) });
+      this.$emit("change", { hour: parseInt(hour.number) });
     },
-    selectMinute: function selectMinute (minute) {
+    selectMinute: function selectMinute(minute) {
       if (minute.disabled) {
-        return
+        return;
       }
 
-      this.$emit('change', { minute: parseInt(minute.number) });
+      this.$emit("change", { minute: parseInt(minute.number) });
     },
-    selectSuffix: function selectSuffix (suffix) {
-      if (suffix === 'am') {
+    selectSuffix: function selectSuffix(suffix) {
+      if (suffix === "am") {
         if (this.hour >= 12) {
-          this.$emit('change', { hour: parseInt(this.hour - 12), suffixTouched: true });
+          this.$emit("change", {
+            hour: parseInt(this.hour - 12),
+            suffixTouched: true
+          });
         }
       }
-      if (suffix === 'pm') {
+      if (suffix === "pm") {
         if (this.hour < 12) {
-          this.$emit('change', { hour: parseInt(this.hour + 12), suffixTouched: true });
+          this.$emit("change", {
+            hour: parseInt(this.hour + 12),
+            suffixTouched: true
+          });
         }
       }
     },
-    formatHour: function formatHour (hour) {
+    formatHour: function formatHour(hour) {
       var numHour = Number(hour);
       if (this.use12Hour) {
         if (numHour === 0) {
-          return 12
+          return 12;
         }
         if (numHour > 12) {
-          return numHour - 12
+          return numHour - 12;
         }
-        return numHour
+        return numHour;
       }
-      return hour
+      return hour;
     }
   },
 
-  mounted: function mounted () {
-    var selectedHour = this.$refs.hourList.querySelector('.vdatetime-time-picker__item--selected');
-    var selectedMinute = this.$refs.minuteList.querySelector('.vdatetime-time-picker__item--selected');
-    this.$refs.hourList.scrollTop = selectedHour ? selectedHour.offsetTop - 250 : 0;
-    this.$refs.minuteList.scrollTop = selectedMinute ? selectedMinute.offsetTop - 250 : 0;
+  mounted: function mounted() {
+    var selectedHour = this.$refs.hourList.querySelector(
+      ".vdatetime-time-picker__item--selected"
+    );
+    var selectedMinute = this.$refs.minuteList.querySelector(
+      ".vdatetime-time-picker__item--selected"
+    );
+    this.$refs.hourList.scrollTop = selectedHour
+      ? selectedHour.offsetTop - 250
+      : 0;
+    this.$refs.minuteList.scrollTop = selectedMinute
+      ? selectedMinute.offsetTop - 250
+      : 0;
   }
 };
 
@@ -391,7 +415,7 @@ var KEY_TAB = 9;
 var KEY_ENTER = 13;
 var KEY_ESC = 27;
 
-var DatetimePopup = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vdatetime-popup"},[_c('div',{staticClass:"vdatetime-popup__header"},[_c('div',{staticClass:"vdatetime-popup__year",on:{"click":_vm.showYear}},[_vm._v(_vm._s(_vm.year))]),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__date"},[_vm._v(_vm._s(_vm.dateFormatted))])]),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__body"},[(_vm.step === 'year')?_c('datetime-year-picker',{attrs:{"year":_vm.year},on:{"change":_vm.onChangeYear}}):_vm._e(),_vm._v(" "),(_vm.step === 'date')?_c('datetime-calendar',{attrs:{"year":_vm.year,"month":_vm.month,"day":_vm.day,"min-date":_vm.minDatetime,"max-date":_vm.maxDatetime,"week-start":_vm.weekStart},on:{"change":_vm.onChangeDate}}):_vm._e(),_vm._v(" "),(_vm.step === 'time')?_c('datetime-time-picker',{attrs:{"hour":_vm.hour,"minute":_vm.minute,"use12-hour":_vm.use12Hour,"hour-step":_vm.hourStep,"minute-step":_vm.minuteStep,"min-time":_vm.minTime,"max-time":_vm.maxTime},on:{"change":_vm.onChangeTime}}):_vm._e()],1),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__actions"},[_c('div',{staticClass:"vdatetime-popup__actions__button vdatetime-popup__actions__button--cancel",on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.phrases.cancel))]),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__actions__button vdatetime-popup__actions__button--confirm",on:{"click":_vm.confirm}},[_vm._v(_vm._s(_vm.phrases.ok))])])])},staticRenderFns: [],
+var DatetimePopup = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vdatetime-popup"},[_c('div',{staticClass:"vdatetime-popup__header"},[_c('div',{staticClass:"vdatetime-popup__year",on:{"click":_vm.showYear}},[_vm._v(_vm._s(_vm.year))]),_vm._v(" "),_c('div',{staticStyle:{"display":"flex","justify-content":"space-between"}},[_c('div',{staticClass:"vdatetime-popup__date"},[_vm._v(_vm._s(_vm.dateFormatted)+" ")]),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__date"},[_vm._v(_vm._s(_vm.timeFormatted)+" ")])])]),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__body"},[(_vm.step === 'year')?_c('datetime-year-picker',{attrs:{"year":_vm.year},on:{"change":_vm.onChangeYear}}):_vm._e(),_vm._v(" "),(_vm.step === 'date')?_c('datetime-calendar',{attrs:{"year":_vm.year,"month":_vm.month,"day":_vm.day,"min-date":_vm.minDatetime,"max-date":_vm.maxDatetime,"week-start":_vm.weekStart},on:{"change":_vm.onChangeDate}}):_vm._e(),_vm._v(" "),(_vm.step === 'time')?_c('datetime-time-picker',{attrs:{"hour":_vm.hour,"minute":_vm.minute,"use12-hour":_vm.use12Hour,"hour-step":_vm.hourStep,"minute-step":_vm.minuteStep,"min-time":_vm.minTime,"max-time":_vm.maxTime},on:{"change":_vm.onChangeTime}}):_vm._e()],1),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__actions"},[_c('div',{staticClass:"vdatetime-popup__actions__button vdatetime-popup__actions__button--cancel",on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.phrases.cancel))]),_vm._v(" "),_c('div',{staticClass:"vdatetime-popup__actions__button vdatetime-popup__actions__button--confirm",on:{"click":_vm.confirm}},[_vm._v(_vm._s(_vm.phrases.ok))])])])},staticRenderFns: [],
   components: {
     DatetimeCalendar: DatetimeCalendar,
     DatetimeTimePicker: DatetimeTimePicker,
@@ -486,6 +510,15 @@ var DatetimePopup = {render: function(){var _vm=this;var _h=_vm.$createElement;v
         month: 'long',
         day: 'numeric'
       })
+    },
+    timeFormatted: function timeFormatted () {
+      if (this.step === 'time') 
+      { return this.newDatetime.toLocaleString({
+        hour: 'numeric',
+        minute: 'numeric'
+      }) }
+      else 
+      { return ""; }
     },
     minTime: function minTime () {
       return (
